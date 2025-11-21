@@ -2,18 +2,19 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "types": ["node"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es2021",
-     "ignoreDeprecations": "6.0"
+    "target": "es2021"
+    //  "ignoreDeprecations": "5.0"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
     "jest.config.ts",
     "jest.config.cts",
-    "src/**/*.spec.ts",
-    "src/**/*.test.ts"
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
   ]
 }

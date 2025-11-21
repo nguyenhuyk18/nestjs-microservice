@@ -6,12 +6,29 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
+import { MicroserviceOptions } from '@nestjs/microservices';
+// import { TcpConfiguration } from '@common/configuration/tcp.config';
+// import { CONFIGURATION } from './configuration';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // config cái này là dành cho consumer (nghĩa là th lắng nghe)
+  app.connectMicroservice<MicroserviceOptions>(
+    {
+      transport: AppModule.CONFIGURATION.TCP_SERV.TCP_INVOICE_SERVICE.transport,
+      options: {
+        host: AppModule.CONFIGURATION.TCP_SERV.TCP_INVOICE_SERVICE.options.host,
+        port: AppModule.CONFIGURATION.TCP_SERV.TCP_INVOICE_SERVICE.options.port
+      },
+    },
+  )
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const port = process.env.INVOICE_PORT || 3000;
+
+  await app.startAllMicroservices();
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
