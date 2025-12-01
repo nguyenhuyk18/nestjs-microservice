@@ -1,16 +1,30 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsProviderAsyncOptions, TcpClientOptions, Transport } from '@nestjs/microservices'
-import { IsEmpty, IsNotEmpty, IsObject } from 'class-validator';
+import { IsNotEmpty, IsObject } from 'class-validator';
 
 export enum TCP_SERVICE {
-    INVOICE_SERVICE = 'TCP_INVOICE_SERVICE'
+    INVOICE_SERVICE = 'TCP_INVOICE_SERVICE',
+    PRODUCT_SERVICE = 'TCP_PRODUCT_SERVICE',
+    USER_ACCESS_SERVICE = 'TCP_USER_ACCESS_SERVICE',
+    AUTHORIZE_SERVICE = 'TCP_AUTHORIZE_SERVICE'
 }
 
 export class TcpConfiguration {
     @IsNotEmpty()
     @IsObject()
     TCP_INVOICE_SERVICE: TcpClientOptions;
-    // BACK_SERVICE: TcpClientOptions;
+
+    @IsNotEmpty()
+    @IsObject()
+    TCP_PRODUCT_SERVICE: TcpClientOptions;
+
+    @IsNotEmpty()
+    @IsObject()
+    TCP_AUTHORIZE_SERVICE: TcpClientOptions;
+
+    @IsNotEmpty()
+    @IsObject()
+    TCP_USER_ACCESS_SERVICE: TcpClientOptions;
 
     constructor() {
         Object.entries(TCP_SERVICE).forEach(([key, serviceName]) => {
@@ -32,15 +46,11 @@ export class TcpConfiguration {
 }
 
 export function TcpProvider(serviceName: keyof TcpConfiguration): ClientsProviderAsyncOptions {
-    // console.log(serviceName)
-    // console.log()
     return {
         name: serviceName,
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => {
-            console.log(serviceName)
-            console.log(configService.get(`TCP_SERV.${serviceName}`));
             return configService.get(`TCP_SERV.${serviceName}`) as TcpClientOptions;
         }
     }

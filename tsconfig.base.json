@@ -21,7 +21,11 @@
       "@common/middlewares/*": ["./libs/middlewares/src/lib/*"],
       "@common/utils/*": ["./libs/utils/src/lib/*"],
       "@common/interfaces/*": ["./libs/interfaces/src/lib/*"],
-      "@common/interceptors/*": ["./libs/interceptors/src/lib/*"]
+      "@common/interceptors/*": ["./libs/interceptors/src/lib/*"],
+      "@common/decorator/*": ["./libs/decorator/src/lib/*"],
+      "@common/schemas/*": ["./libs/schemas/src/lib/*"],
+      "@common/entities/*": ["./libs/entities/src/lib/*"],
+      "@common/guards/*": ["./libs/guards/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
